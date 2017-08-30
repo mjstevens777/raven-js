@@ -10,6 +10,11 @@ function emberPlugin(Raven, Ember) {
 
     // quit if Ember isn't on the page
     if (!Ember) return;
+    if (Ember.testing === true) {
+        // Patching the onerror callback can cause errors in tests to
+        // fail silently. Do not patch during testing.
+        return;
+    }
 
     var _oldOnError = Ember.onerror;
     Ember.onerror = function EmberOnError(error) {
